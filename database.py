@@ -10,5 +10,3 @@ con = psycopg2.connect(host=CONSTANTS.HOST,
 #database cursor
 cur= con.cursor()
 
-
-
