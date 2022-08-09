@@ -5,6 +5,7 @@ Module with all trade funcionalities
 from iqoptionapi.stable_api import IQ_Option
 
 import CONSTANTS
+import database
 
 IQ = IQ_Option(CONSTANTS.IQUSER, CONSTANTS.IQPASSWORD)
 
@@ -43,5 +44,8 @@ def get_stake_by_percentage_of_balance(percentage):
 
 def buy(asset, timeframe_in_minutes, stake, action):
     check, entry_id = IQ.buy_digital_spot(asset, stake, action, timeframe_in_minutes)
+    if check:
+        payout = get_asset_payout(asset)
+        database.insert_new_entry_on_entries_database(str(entry_id), CONSTANTS.TRADETYPE, asset, payout, stake)
     return check, entry_id
 
