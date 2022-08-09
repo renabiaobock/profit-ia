@@ -32,3 +32,7 @@ def get_open_assets():
 def get_asset_payout(asset):
     return IQ.get_digital_payout(asset)
 
+
+def get_account_balance():
+    return IQ.get_balance()
+
