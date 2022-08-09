@@ -1,5 +1,6 @@
 import logging
 
+import CONSTANTS
 import trader
 
 
@@ -9,5 +10,5 @@ logging.disable(level=(logging.DEBUG))
 trader.connect_to_iq()
 
 "Change trade type"
-trader.change_trade_type('PRACTICE')
+trader.change_trade_type(CONSTANTS.TRADETYPE)
 
