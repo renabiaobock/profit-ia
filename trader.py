@@ -46,6 +46,10 @@ def buy(asset, timeframe_in_minutes, stake, action):
     check, entry_id = IQ.buy_digital_spot(asset, stake, action, timeframe_in_minutes)
     if check:
         payout = get_asset_payout(asset)
-        database.insert_new_entry_on_entries_database(str(entry_id), CONSTANTS.TRADETYPE, asset, payout, stake)
+        database.insert_new_entry_on_database(str(entry_id), CONSTANTS.TRADETYPE, asset, payout, stake)
     return check, entry_id
+
+
+def get_trade_result(entry_id):
+    return IQ.check_win_digital_v2(entry_id)
 
