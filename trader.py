@@ -25,4 +25,6 @@ def get_open_assets():
     return list(open_assets)
 
 
+def get_asset_payout(asset):
+    return IQ.get_digital_payout(asset)
 
