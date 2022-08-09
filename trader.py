@@ -3,6 +3,7 @@ Module with all trade funcionalities
 """
 from time import sleep
 from datetime import datetime
+from threading import Thread
 
 from iqoptionapi.stable_api import IQ_Option
 
@@ -71,4 +72,9 @@ def buy_and_wait_for_result(asset, timeframe_in_minutes, stake, action):
         result = 'tie'
     database.update_entry_result_and_profit(entry_id, result, profit)
     return result, profit
+
+
+def buy_and_wait_for_result_as_thread(asset, timeframe_in_minutes, stake, action):
+    buy_thread = Thread(target=buy_and_wait_for_result, args=(asset, timeframe_in_minutes, stake, action))
+    buy_thread.start()
 
