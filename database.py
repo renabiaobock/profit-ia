@@ -8,5 +8,5 @@ con = psycopg2.connect(host=CONSTANTS.HOST,
                        password=CONSTANTS.PASSWORD)
 
 #database cursor
-cur= con.cursor()
+cur=con.cursor()
 
