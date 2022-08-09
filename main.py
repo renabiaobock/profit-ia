@@ -1,10 +1,10 @@
-from iqoptionapi.stable_api import IQ_Option
 import logging
-import CONSTANTS
+
+import trader
 
 
 logging.disable(level=(logging.DEBUG))
 
-IQ = IQ_Option(CONSTANTS.IQUSER, CONSTANTS.IQPASSWORD)
-check, reason = IQ.connect()
+"Conect to IQ account"
+trader.connect_to_iq()
 
