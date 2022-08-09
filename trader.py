@@ -17,3 +17,10 @@ def change_trade_type(trade_type):
     "PRACTICE/REAL"
     IQ.change_balance(trade_type)
 
+
+def get_open_assets():
+    "digital mode only"
+    open_assets = IQ.get_all_open_time()
+    open_assets = open_assets['digital'].keys()
+    return list(open_assets)
+
