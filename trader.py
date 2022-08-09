@@ -20,9 +20,13 @@ def change_trade_type(trade_type):
 
 def get_open_assets():
     "get only digital assets"
-    open_assets = IQ.get_all_open_time()
-    open_assets = open_assets['digital'].keys()
-    return list(open_assets)
+    assets_info = IQ.get_all_open_time()
+    digital_assets_info = assets_info['digital']
+    open_assets = []
+    for asset in digital_assets_info:
+        if digital_assets_info[asset]['open']:
+            open_assets.append(asset)
+    return open_assets
 
 
 def get_asset_payout(asset):
