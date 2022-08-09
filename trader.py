@@ -1,6 +1,7 @@
 """
 Module with all trade funcionalities
 """
+from time import sleep
 
 from iqoptionapi.stable_api import IQ_Option
 
@@ -52,4 +53,19 @@ def buy(asset, timeframe_in_minutes, stake, action):
 
 def get_trade_result(entry_id):
     return IQ.check_win_digital_v2(entry_id)
+
+
+def buy_and_wait_for_result(asset, timeframe_in_minutes, stake, action):
+    check, entry_id = buy(asset, timeframe_in_minutes, stake, action)
+    if check:
+        while not get_trade_result(entry_id)[0]:
+            sleep(1)
+        profit = get_trade_result(entry_id)[1]
+    if profit < 0:
+        result = 'loss'
+    elif profit > 0:
+        result = 'win'
+    elif profit == 0:
+        result = 'tie'
+    return result, profit
 
