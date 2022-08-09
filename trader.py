@@ -2,6 +2,7 @@
 Module with all trade funcionalities
 """
 from time import sleep
+from datetime import datetime
 
 from iqoptionapi.stable_api import IQ_Option
 
@@ -46,8 +47,9 @@ def get_stake_by_percentage_of_balance(percentage):
 def buy(asset, timeframe_in_minutes, stake, action):
     check, entry_id = IQ.buy_digital_spot(asset, stake, action, timeframe_in_minutes)
     if check:
+        date_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         payout = get_asset_payout(asset)
-        database.insert_new_entry_on_database(str(entry_id), CONSTANTS.TRADETYPE, asset, payout, stake)
+        database.insert_new_entry_on_database(str(entry_id), date_time, CONSTANTS.TRADETYPE, asset, payout, stake)
     return check, entry_id
 
 
