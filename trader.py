@@ -62,12 +62,13 @@ def buy_and_wait_for_result(asset, timeframe_in_minutes, stake, action):
     if check:
         while not get_trade_result(entry_id)[0]:
             sleep(1)
-        profit = get_trade_result(entry_id)[1]
+        profit = round(get_trade_result(entry_id)[1], 2)
     if profit < 0:
         result = 'loss'
     elif profit > 0:
         result = 'win'
     elif profit == 0:
         result = 'tie'
+    database.update_entry_result_and_profit(entry_id, result, profit)
     return result, profit
 
