@@ -36,3 +36,12 @@ def get_asset_payout(asset):
 def get_account_balance():
     return IQ.get_balance()
 
+
+def get_stake_by_percentage_of_balance(percentage):
+    return round((percentage/100) * get_account_balance(), 2)
+
+
+def buy(asset, timeframe_in_minutes, stake, action):
+    check, entry_id = IQ.buy_digital_spot(asset, stake, action, timeframe_in_minutes)
+    return check, entry_id
+
