@@ -4,7 +4,7 @@ Module that calculate indicators from candle data
 
 import time
 import numpy as np
-from talib.abstract import (EMA)
+from talib.abstract import (EMA, BBANDS)
 
 import trader
 
@@ -29,6 +29,7 @@ def generate_candle_data_from_candle_stream(asset, timeframe_in_minutes):
     return candle_data
 
 
+# EMA
 def calculate_EMA(candle_data, EMA_time_period):
     return EMA(candle_data, timeperiod=EMA_time_period)
 
@@ -36,4 +37,16 @@ def calculate_EMA(candle_data, EMA_time_period):
 def calculate_asset_EMA(asset, timeframe_in_minutes, EMA_time_period):
     candle_data = generate_candle_data_from_candle_stream(asset, timeframe_in_minutes)
     return calculate_EMA(candle_data, EMA_time_period)
+
+
+#Bollinger Bands
+def calculate_bollinger_bands(candle_data, BB_time_period, BB_dev_up, BB_dev_down):
+    upperband, middleband, lowerband = BBANDS(candle_data['close'], BB_time_period, BB_dev_up, BB_dev_down, matype=0)
+    return upperband, middleband, lowerband
+
+
+def calculate_asset_BB(asset, timeframe_in_minutes, BB_time_period, BB_dev_up, BB_dev_down):
+    candle_data = generate_candle_data_from_candle_stream(asset, timeframe_in_minutes)
+    upperband, middleband, lowerband = calculate_bollinger_bands(candle_data, BB_time_period, BB_dev_up, BB_dev_down)
+    return {'upper': upperband, 'middle': middleband, 'lower': lowerband}
 
