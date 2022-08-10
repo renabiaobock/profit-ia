@@ -82,3 +82,8 @@ def buy_and_wait_for_result_as_thread(asset, timeframe_in_minutes, stake, action
 def subscribe_to_candle_stream(asset, timeframe_in_minutes, n_candles):
     IQ.start_candles_stream(asset, timeframe_in_minutes, n_candles)
 
+
+def get_real_time_candles(asset, timeframe_in_minutes):
+    "get real time candles need an active subscription to the candle stream"
+    return IQ.get_realtime_candles(asset, timeframe_in_minutes)
+
