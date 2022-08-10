@@ -21,7 +21,7 @@ def generate_candle_data_from_candle_stream(asset, timeframe_in_minutes):
         'volume': np.array([])
     }
 
-    for timestamp in candles:
+    for timestamp in tuple(candles):
         candle_data["open"] = np.append(candle_data["open"], candles[timestamp]["open"])
         candle_data["high"] = np.append(candle_data["high"], candles[timestamp]["max"])
         candle_data["low"] = np.append(candle_data["low"], candles[timestamp]["min"])
