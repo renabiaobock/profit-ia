@@ -10,6 +10,7 @@ import trader
 
 
 def generate_candle_data_from_candle_stream(asset, timeframe_in_minutes):
+    "convert a candle streaming data into numpy array to be used as data to calculate TA-Lib indicators"
     candles=trader.get_real_time_candles(asset, timeframe_in_minutes)
 
     candle_data = {
