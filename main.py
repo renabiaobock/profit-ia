@@ -2,7 +2,6 @@ import logging
 
 import CONSTANTS
 import trader
-import indicators
 
 
 logging.disable(level=(logging.DEBUG))
