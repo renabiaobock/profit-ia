@@ -78,3 +78,7 @@ def buy_and_wait_for_result_as_thread(asset, timeframe_in_minutes, stake, action
     buy_thread = Thread(target=buy_and_wait_for_result, args=(asset, timeframe_in_minutes, stake, action))
     buy_thread.start()
 
+
+def subscribe_to_candle_stream(asset, timeframe_in_minutes, n_candles):
+    IQ.start_candles_stream(asset, timeframe_in_minutes, n_candles)
+
