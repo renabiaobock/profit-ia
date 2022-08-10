@@ -11,7 +11,7 @@ def check_entry_BOLLINGER_BANDS_EMA(asset, timeframe_in_minutes,
     bollinger_bands = indicators.calculate_asset_BB(asset, timeframe_in_minutes,
                                                     BB_time_period, BB_dev_up, BB_dev_down)
     bollinger_bands_last_upper = bollinger_bands['upper'][-1]
-    bollinger_bands_last_lower = bollinger_bands['lower'][-2]
+    bollinger_bands_last_lower = bollinger_bands['lower'][-1]
     # Strategy logic
     if price > bollinger_bands_last_upper:
         return 'put'
