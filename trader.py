@@ -13,6 +13,9 @@ import database
 IQ = IQ_Option(CONSTANTS.IQUSER, CONSTANTS.IQPASSWORD)
 
 
+asset_trade_count = {}
+
+
 def connect_to_iq():
     IQ.connect()
 
@@ -43,6 +46,17 @@ def get_account_balance():
 
 def get_stake_by_percentage_of_balance(percentage):
     return round((percentage/100) * get_account_balance(), 2)
+
+
+def increase_asset_trade_count(asset):
+    if asset in asset_trade_count:
+        asset_trade_count[asset] = asset_trade_count[asset] + 1
+    else:
+        asset_trade_count[asset] = 1
+
+
+def decrease_asset_trade_count(asset):
+    asset_trade_count[asset] = asset_trade_count[asset] - 1
 
 
 def buy(asset, timeframe_in_minutes, stake, action):
