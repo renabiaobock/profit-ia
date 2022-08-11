@@ -1,26 +1,39 @@
 import logging
 import time
+import schedule
 
 import CONSTANTS
 import trader
 import strategy
 
 
+def check_connection_and_update_open_assets():
+    "check conection"
+    if not trader.IQ.check_connect:
+        trader.connect_to_iq()
+    "update open assets"
+    open_assets = trader.get_open_assets()
+    for asset in open_assets:
+        trader.subscribe_to_candle_stream(asset, CONSTANTS.TIMEFRAME, 200)
+
+
 logging.disable(level=(logging.DEBUG))
 
-"1: Conect to IQ account"
+#1: Conect to IQ account and update open assets"
 trader.connect_to_iq()
-
-"2: Change trade type"
-trader.change_trade_type(CONSTANTS.TRADETYPE)
-
 open_assets = trader.get_open_assets()
-
-
 for asset in open_assets:
     trader.subscribe_to_candle_stream(asset, CONSTANTS.TIMEFRAME, 200)
 
+#2: Change trade type
+trader.change_trade_type(CONSTANTS.TRADETYPE)
+
+#3: Create scheduler to check conection and update open assets every 1 minute
+schedule.every().minute.at(':10').do(check_connection_and_update_open_assets)
+
+#4: Start trading loop
 while True:
+    schedule.run_pending()
     for asset in open_assets:
         direction = strategy.check_entry_BOLLINGER_BANDS_EMA(asset, CONSTANTS.TIMEFRAME,
                                                              CONSTANTS.BB_PERIOD,
