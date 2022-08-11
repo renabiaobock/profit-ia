@@ -59,7 +59,7 @@ def decrease_asset_trade_count(asset):
 def reached_limit_of_simultaneous_trades(max_simultaneous_trades, asset):
     if not asset in asset_trade_count:
         asset_trade_count[asset] = 0
-    if asset_trade_count[asset] >= max_simultaneous_trades:
+    if asset_trade_count[asset] > max_simultaneous_trades:
         return True
     else:
         return False
