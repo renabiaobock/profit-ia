@@ -14,7 +14,6 @@ trader.connect_to_iq()
 "2: Change trade type"
 trader.change_trade_type(CONSTANTS.TRADETYPE)
 
-timeframe = 5
 open_assets = trader.get_open_assets()
 
 
