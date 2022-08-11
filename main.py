@@ -26,7 +26,7 @@ while True:
                                                              CONSTANTS.BB_PERIOD,
                                                              CONSTANTS.BB_DEV_UP,
                                                              CONSTANTS.BB_DEV_DOWN,
-                                                             EMA_time_period)
+                                                             CONSTANTS.EMA)
         if direction and asset not in trader.trading_assets:
             trader.trading_assets.append(asset)
             trader.buy_and_wait_for_result_as_thread(asset, timeframe, 10, direction)
