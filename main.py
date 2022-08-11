@@ -17,12 +17,14 @@ trader.change_trade_type(CONSTANTS.TRADETYPE)
 timeframe = 5
 open_assets = trader.get_open_assets()
 
+
 for asset in open_assets:
     trader.subscribe_to_candle_stream(asset, timeframe, 200)
 while True:
     for asset in open_assets:
         direction = strategy.check_entry_BOLLINGER_BANDS_EMA(asset, timeframe, 20, 1.5, 1.5)
-        if direction:
+        if direction and asset not in trader.trading_assets:
+            trader.trading_assets.append(asset)
             trader.buy_and_wait_for_result_as_thread(asset, timeframe, 10, direction)
-    time.sleep(0.1)
+    time.sleep(0.2)
 

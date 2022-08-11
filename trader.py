@@ -14,6 +14,9 @@ import database
 IQ = IQ_Option(CONSTANTS.IQUSER, CONSTANTS.IQPASSWORD)
 
 
+trading_assets = []
+
+
 def connect_to_iq():
     IQ.connect()
 
@@ -68,6 +71,7 @@ def buy_and_wait_for_result(asset, timeframe_in_minutes, stake, action):
         while not get_trade_result(entry_id)[0]:
             sleep(1)
         profit = round(get_trade_result(entry_id)[1], 2)
+        trading_assets.remove(asset)
         if profit < 0:
             result = 'loss'
         elif profit > 0:
@@ -75,9 +79,7 @@ def buy_and_wait_for_result(asset, timeframe_in_minutes, stake, action):
         elif profit == 0:
             result = 'tie'
         database.update_entry_result_and_profit(entry_id, result, profit)
-    else:
-        result, profit = None, None
-    return result, profit
+        return result, profit
 
 
 def buy_and_wait_for_result_as_thread(asset, timeframe_in_minutes, stake, action):
