@@ -49,10 +49,7 @@ def get_stake_by_percentage_of_balance(percentage):
 
 
 def increase_asset_trade_count(asset):
-    if asset in asset_trade_count:
-        asset_trade_count[asset] = asset_trade_count[asset] + 1
-    else:
-        asset_trade_count[asset] = 1
+    asset_trade_count[asset] = asset_trade_count[asset] + 1
 
 
 def decrease_asset_trade_count(asset):
@@ -60,6 +57,8 @@ def decrease_asset_trade_count(asset):
 
 
 def reached_limit_of_simultaneous_trades(max_simultaneous_trades, asset):
+    if not asset in asset_trade_count:
+        asset_trade_count[asset] = 0
     if asset_trade_count[asset] >= max_simultaneous_trades:
         return True
     else:
@@ -90,13 +89,15 @@ def buy_and_wait_for_result(asset, timeframe_in_minutes, stake, action):
             sleep(1)
         profit = round(get_trade_result(entry_id)[1], 2)
         decrease_asset_trade_count(asset)
-    if profit < 0:
-        result = 'loss'
-    elif profit > 0:
-        result = 'win'
-    elif profit == 0:
-        result = 'tie'
-    database.update_entry_result_and_profit(entry_id, result, profit)
+        if profit < 0:
+            result = 'loss'
+        elif profit > 0:
+            result = 'win'
+        elif profit == 0:
+            result = 'tie'
+        database.update_entry_result_and_profit(entry_id, result, profit)
+    else:
+        result, profit = None, None
     return result, profit
 
 
