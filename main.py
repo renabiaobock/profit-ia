@@ -19,16 +19,17 @@ open_assets = trader.get_open_assets()
 
 
 for asset in open_assets:
-    trader.subscribe_to_candle_stream(asset, timeframe, 200)
+    trader.subscribe_to_candle_stream(asset, CONSTANTS.TIMEFRAME, 200)
+
 while True:
     for asset in open_assets:
-        direction = strategy.check_entry_BOLLINGER_BANDS_EMA(asset, timeframe,
+        direction = strategy.check_entry_BOLLINGER_BANDS_EMA(asset, CONSTANTS.TIMEFRAME,
                                                              CONSTANTS.BB_PERIOD,
                                                              CONSTANTS.BB_DEV_UP,
                                                              CONSTANTS.BB_DEV_DOWN,
                                                              CONSTANTS.EMA)
         if direction and asset not in trader.trading_assets:
             trader.trading_assets.append(asset)
-            trader.buy_and_wait_for_result_as_thread(asset, timeframe, 10, direction)
+            trader.buy_and_wait_for_result_as_thread(asset, CONSTANTS.TIMEFRAME, 10, direction)
     time.sleep(0.2)
 
