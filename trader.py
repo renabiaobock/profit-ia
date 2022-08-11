@@ -10,10 +10,8 @@ from iqoptionapi.stable_api import IQ_Option
 import CONSTANTS
 import database
 
+
 IQ = IQ_Option(CONSTANTS.IQUSER, CONSTANTS.IQPASSWORD)
-
-
-asset_trade_count = {}
 
 
 def connect_to_iq():
@@ -31,8 +29,11 @@ def get_open_assets():
     digital_assets_info = assets_info['digital']
     open_assets = []
     for asset in digital_assets_info:
-        if digital_assets_info[asset]['open']:
+        if digital_assets_info[asset]['open'] and asset not in open_assets:
             open_assets.append(asset)
+        else:
+            if asset in open_assets:
+                open_assets.remove(asset)
     return open_assets
 
 
@@ -48,33 +49,12 @@ def get_stake_by_percentage_of_balance(percentage):
     return round((percentage/100) * get_account_balance(), 2)
 
 
-def increase_asset_trade_count(asset):
-    asset_trade_count[asset] = asset_trade_count[asset] + 1
-
-
-def decrease_asset_trade_count(asset):
-    asset_trade_count[asset] = asset_trade_count[asset] - 1
-
-
-def reached_limit_of_simultaneous_trades(max_simultaneous_trades, asset):
-    if not asset in asset_trade_count:
-        asset_trade_count[asset] = 0
-    if asset_trade_count[asset] > max_simultaneous_trades:
-        return True
-    else:
-        return False
-
-
 def buy(asset, timeframe_in_minutes, stake, action):
-    if not reached_limit_of_simultaneous_trades(1, asset):
-        check, entry_id = IQ.buy_digital_spot(asset, stake, action, timeframe_in_minutes)
-        if check:
-            increase_asset_trade_count(asset)
-            date_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            payout = get_asset_payout(asset)
-            database.insert_new_entry_on_database(str(entry_id), date_time, CONSTANTS.TRADETYPE, asset, payout, stake)
-    else:
-        check, entry_id = False, 0
+    check, entry_id = IQ.buy_digital_spot(asset, stake, action, timeframe_in_minutes)
+    if check:
+        date_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        payout = get_asset_payout(asset)
+        database.insert_new_entry_on_database(str(entry_id), date_time, CONSTANTS.TRADETYPE, asset, payout, stake)
     return check, entry_id
 
 
@@ -88,7 +68,6 @@ def buy_and_wait_for_result(asset, timeframe_in_minutes, stake, action):
         while not get_trade_result(entry_id)[0]:
             sleep(1)
         profit = round(get_trade_result(entry_id)[1], 2)
-        decrease_asset_trade_count(asset)
         if profit < 0:
             result = 'loss'
         elif profit > 0:
