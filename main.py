@@ -41,7 +41,7 @@ while True:
                                                              CONSTANTS.EMA)
         if direction and asset not in trader.trading_assets:
             trader.trading_assets.append(asset)
-            stake = trader.get_stake_by_percentage_of_balance(1)
+            stake = trader.get_stake_by_percentage_of_balance(CONSTANTS.STAKE_PERCENTAGE)
             trader.buy_and_wait_for_result_as_thread(asset, CONSTANTS.TIMEFRAME, stake, direction)
     time.sleep(0.2)
 
