@@ -11,11 +11,10 @@ def check_connection_and_update_open_assets():
     "check conection"
     if not trader.IQ.check_connect:
         trader.connect_to_iq()
-    if trader.IQ.check_connect():
-        "update open assets"
-        open_assets = trader.get_open_assets()
-        for asset in open_assets:
-            trader.subscribe_to_candle_stream(asset, CONSTANTS.TIMEFRAME, 200)
+    "update open assets"
+    open_assets = trader.get_open_assets()
+    for asset in open_assets:
+        trader.subscribe_to_candle_stream(asset, CONSTANTS.TIMEFRAME, 200)
 
 
 #1: Conect to IQ account and update open assets"
